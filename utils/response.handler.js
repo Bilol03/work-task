@@ -1,7 +1,7 @@
 let responce = (res, status, data) => {
     if (status >= 200 && status <= 205) {
       res.status(status).json({
-        status: "Succes",
+        status: "Success",
         data,
       });
     } else {

@@ -31,8 +31,6 @@ let UPDATE = errorHandler(async (req, res) => {
     if(!body.comment && !body.rating) throw new Error("Editing info not entered!")
 
 	let data = await Comments.findOne({ _id: commentId });
-    console.log(data);
-    
     if (!data) throw new Error("Comment not found")
     
     if(data.userId != req.id) throw new Error("You are not allowed to edit this comment!")
@@ -43,7 +41,18 @@ let UPDATE = errorHandler(async (req, res) => {
 
 })
 
+let DELETE = errorHandler(async (req, res) => {
+    let commentId = req.params.id
 
+    let data = await Comments.findOne({ _id: commentId });
+    if (!data) throw new Error("Comment not found")
+    
+    if(data.userId != req.id) throw new Error("You are not allowed to delete this comment!")
+    
+    let deleted = await Comments.findByIdAndDelete(commentId).exec()
+
+	responce(res, 201, { message: 'Successfully deleted!', deleted })
+})
 
 
 
@@ -51,4 +60,5 @@ export default {
 	POST,
 	GET_BY_ID,
     UPDATE,
+    DELETE,
 }
